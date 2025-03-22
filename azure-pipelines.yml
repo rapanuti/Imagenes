@@ -28,4 +28,4 @@ steps:
           # Ejecuta docker pull solo si no hay vulnerabilidades
           docker pull $image
         fi
-      done < https://github.com/rapanuti/Imagenes/blob/main/images-lis.txt
+      done < Imagenes/images-lis.txt

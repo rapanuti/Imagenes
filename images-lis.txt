@@ -2,3 +2,9 @@ docker run -d --name=grafana -p 3000:3000 grafana/grafana
 docker buildx imagetools inspect nginx/nginx-ingress:edge --format '{{ json (index .SBOM "linux/amd64").SPDX }}' | grype
 docker pull nginx/nginx-ingress-operator
 docker run -it --rm tensorflow/tensorflow bash
+docker run -d -v ollama:/root/.ollama -p 11434:11434 --name ollama ollama/ollama
+docker run --name some-postgres -e POSTGRES_PASSWORD=mysecretpassword -d postgres
+docker run --name some-mysql -e MYSQL_ROOT_PASSWORD=my-secret-pw -d mysql:tag
+docker run --name some-mongo -d mongo:tag
+docker pull selenium/video
+docker pull mathworks/matlab:r2024b

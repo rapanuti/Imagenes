@@ -1,20 +1,31 @@
-# Starter pipeline
-# Start with a minimal pipeline that you can customize to build and deploy your code.
-# Add steps that build, run tests, deploy, and more:
-# https://aka.ms/yaml
 
 trigger: none
 
 pool:
   vmImage: ubuntu-latest
 
+variables:
+  imageName: 'imagenes_oswaldo'
+
+
 steps:
-- script: echo Hello, Israel!
-  displayName: 'Run a one-line script'
-
-
-- task: DownloadGithubNpmPackage@1
+- script: echo Hello, Israel estamos intentando !
+- task: Bash@3
+  displayName: 'Leer imágenes del txt del DockerHUB'
   inputs:
-    packageName: 'alpine'
-    version: 'latest'
-    installDirectory: 'imagen de alpine'
+    targetType: 'inline'
+    script: |
+      while IFS= read -r image; do
+        echo "lee la Imagen del archivo  imagen: $image"
+        # Escaneo de vulnerabilidades con Trivy
+        docker run --rm -v /var/run/docker.sock:/var/run/docker.sock aquasec/trivy image --exit-code 0 $image > trivy_results.json
+        # Verifica si Trivy encontró vulnerabilidades
+        if grep -q "Vulnerability ID" trivy_results.json; then
+          echo "Se encontraron vulnerabilidades en $image"
+          exit 1 # Marca el paso como fallido
+        else
+          echo "No se encontraron vulnerabilidades en $image"
+          # Ejecuta docker pull solo si no hay vulnerabilidades
+          docker pull $image
+        fi
+      done < https://github.com/rapanuti/Imagenes/blob/main/images-lis.txt

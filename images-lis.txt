@@ -1,3 +1,4 @@
 docker run -d --name=grafana -p 3000:3000 grafana/grafana
 docker buildx imagetools inspect nginx/nginx-ingress:edge --format '{{ json (index .SBOM "linux/amd64").SPDX }}' | grype
 docker pull nginx/nginx-ingress-operator
+docker run -it --rm tensorflow/tensorflow bash

@@ -12,7 +12,9 @@ steps:
 - script: echo Hello, Israel!
   displayName: 'Run a one-line script'
 
-- script: |
-    echo Add other tasks to build, test, and deploy your project.
-    echo See https://aka.ms/yaml
-  displayName: 'Run a multi-line script'
+
+- task: DownloadGithubNpmPackage@1
+  inputs:
+    packageName: 'alpine'
+    version: 'latest'
+    installDirectory: 'imagen de alpine'
